@@ -9,7 +9,7 @@ const Base=({title="welcome to our webiste",children})=>{
             {children}
 
 
-            <h1>This is footer</h1>
+            {/* <h1>This is footer</h1> */}
         </div>
     );
 
