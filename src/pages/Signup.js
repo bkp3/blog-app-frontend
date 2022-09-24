@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
 import Base from "../components/Base";
+import { signUp } from "../services/user-service";
+import { toast } from 'react-toastify';
 
 const Signup = () => {
 
@@ -46,6 +48,22 @@ const Signup = () => {
         //data validate
 
         //call server api for sending the data
+
+        signUp(data).then((resp) => {
+            console.log(resp);
+            console.log("success log");
+            toast.success("User is Successfully Registered !!")
+            setData({
+                name: '',
+                email: '',
+                password: '',
+                about: ''
+            })
+        }).catch((error) => {
+            console.log(error);
+            console.log("error log");
+            toast.error("Something went wrong !!")
+        })
 
     }
 
