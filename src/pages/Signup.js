@@ -45,6 +45,12 @@ const Signup = () => {
 
         console.log(data);
 
+        // if (error.isError) {
+        //     toast.error("Form data is invlid, Correct all details then submit !!");
+        //     setError({ ...error, isError: false })
+        //     return;
+        // }
+
         //data validate
 
         //call server api for sending the data
@@ -52,17 +58,25 @@ const Signup = () => {
         signUp(data).then((resp) => {
             console.log(resp);
             console.log("success log");
-            toast.success("User is Successfully Registered !!")
+            toast.success("User is Successfully Registered !! user id : " + resp.id)
             setData({
                 name: '',
                 email: '',
                 password: '',
                 about: ''
             })
+            setError({ ...error, isError: false, errors: "" });
         }).catch((error) => {
             console.log(error);
             console.log("error log");
             toast.error("Something went wrong !!")
+
+            //handle errors in proper way
+            setError({
+                errors: error,
+                isError: true,
+            })
+
         })
 
     }
@@ -90,8 +104,14 @@ const Signup = () => {
                                             id="name"
                                             onChange={(e) => handleChange(e, 'name')}
                                             value={data.name}
+                                            invalid={error.errors?.response?.data?.name ? true : false}
                                         />
+                                        <FormFeedback>
+                                            {error.errors?.response?.data?.name}
+                                        </FormFeedback>
                                     </FormGroup>
+
+
 
                                     {/* email field */}
                                     <FormGroup>
@@ -101,7 +121,12 @@ const Signup = () => {
                                             placeholder="Enter here"
                                             id="email"
                                             onChange={(e) => handleChange(e, 'email')}
-                                            value={data.email} />
+                                            value={data.email}
+                                            invalid={error.errors?.response?.data?.email ? true : false}
+                                        />
+                                        <FormFeedback>
+                                            {error.errors?.response?.data?.email}
+                                        </FormFeedback>
                                     </FormGroup>
 
                                     {/* password field */}
@@ -112,7 +137,12 @@ const Signup = () => {
                                             placeholder="Enter here"
                                             id="password"
                                             onChange={(e) => handleChange(e, 'password')}
-                                            value={data.password} />
+                                            value={data.password}
+                                            invalid={error.errors?.response?.data?.password ? true : false}
+                                        />
+                                        <FormFeedback>
+                                            {error.errors?.response?.data?.password}
+                                        </FormFeedback>
                                     </FormGroup>
 
                                     {/* about field */}
@@ -123,7 +153,12 @@ const Signup = () => {
                                             placeholder="Enter here"
                                             id="about"
                                             onChange={(e) => handleChange(e, 'about')}
-                                            value={data.about} />
+                                            value={data.about}
+                                            invalid={error.errors?.response?.data?.about ? true : false}
+                                        />
+                                        <FormFeedback>
+                                            {error.errors?.response?.data?.about}
+                                        </FormFeedback>
                                     </FormGroup>
 
                                     {/* button submit */}
