@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { doLogin } from "../auth";
 import Base from "../components/Base";
 import { loginUser } from "../services/user-service";
 
@@ -39,9 +40,16 @@ const Login = () => {
 
         //submit the data to the server to generate token
 
-        loginUser(loginDetail).then((jwtTokenData) => {
+        loginUser(loginDetail).then((data) => {
             console.log("User login :");
-            console.log(jwtTokenData);
+            console.log(data);
+
+            //saved the data to localstorage
+            doLogin(data, () => {
+                console.log("login detail is saved to localstorage");
+            })
+
+
             toast.success("Login Success");
         }).catch((error) => {
             console.log(error);
