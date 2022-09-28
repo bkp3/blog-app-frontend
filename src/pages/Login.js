@@ -47,6 +47,7 @@ const Login = () => {
             //saved the data to localstorage
             doLogin(data, () => {
                 console.log("login detail is saved to localstorage");
+                //redirect to user dashboard page
             })
 
 
