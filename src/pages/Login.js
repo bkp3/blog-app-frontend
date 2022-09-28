@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { doLogin } from "../auth";
@@ -6,6 +7,8 @@ import Base from "../components/Base";
 import { loginUser } from "../services/user-service";
 
 const Login = () => {
+
+    const navigate = useNavigate()
 
 
     const [loginDetail, setLoginDetail] = useState({
@@ -48,6 +51,7 @@ const Login = () => {
             doLogin(data, () => {
                 console.log("login detail is saved to localstorage");
                 //redirect to user dashboard page
+                navigate("/user/dashboard")
             })
 
 

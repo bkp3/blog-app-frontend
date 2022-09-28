@@ -85,7 +85,7 @@ const Signup = () => {
         <Base>
             <Container>
                 <Row className="mt-4">
-                    {JSON.stringify(data)}
+                    {/* {JSON.stringify(data)} */}
                     <Col sm={{ size: 6, offset: 3 }}>
                         <Card outline color="dark">
                             <CardHeader>
