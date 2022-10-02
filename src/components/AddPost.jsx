@@ -1,12 +1,21 @@
-import { useEffect } from "react";
+import JoditEditor from "jodit-react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Card, CardBody, Container, Form, Input, Label } from "reactstrap";
 import { loadAllCategories } from "../services/category-service";
 
 const AddPost = () => {
 
+    const editor = useRef(null)
+    const [content, setContent] = useState('')
+    const config = { placeholder: "Start typing..." }
+
+
+    const [categories, setCategories] = useState([])
+
     useEffect(() => {
         loadAllCategories().then((data) => {
             console.log(data);
+            setCategories(data)
         }).catch((error) => {
             console.log(error);
         })
@@ -31,12 +40,22 @@ const AddPost = () => {
 
                         <div className="my-3">
                             <Label for="content">Post Content</Label>
-                            <Input
+                            {/* <Input
                                 type="textarea"
                                 id="content"
                                 placeholder="Enter here"
                                 style={{ height: "200px" }}
+                            /> */}
+
+                            <JoditEditor
+                                ref={editor}
+                                value={content}
+                                config={config}
+                                onChange={newContent => setContent(newContent)}
+
+
                             />
+
                         </div>
 
                         <div className="my-3">
@@ -48,11 +67,12 @@ const AddPost = () => {
 
                             >
 
-                                <option>Programming</option>
-                                <option>Mathematics</option>
-                                <option>GK</option>
-                                <option>GS</option>
-                                <option>Sports</option>
+                                {
+                                    categories.map((category) => (
+                                        <option value={category.categoryId} key={category.categoryId}>{category.categoryTitle}</option>
+                                    ))
+                                }
+
                             </Input>
 
                         </div>
