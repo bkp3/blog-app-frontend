@@ -1,40 +1,98 @@
 import JoditEditor from "jodit-react";
 import { useEffect, useRef, useState } from "react";
-import { Button, Card, CardBody, Container, Form, Input, Label } from "reactstrap";
+import { toast } from "react-toastify";
+import { Alert, Button, Card, CardBody, Container, Form, Input, Label } from "reactstrap";
+import { getCurrentUserDetail } from "../auth";
 import { loadAllCategories } from "../services/category-service";
+import { createPostFun } from "../services/post-service";
 
 const AddPost = () => {
 
     const editor = useRef(null)
-    const [content, setContent] = useState('')
-    const config = { placeholder: "Start typing..." }
 
 
     const [categories, setCategories] = useState([])
 
+    const [user, setUser] = useState(undefined);
+
+    const [post, setPost] = useState({
+        title: '',
+        content: '',
+        categoryId: ''
+    })
+
+    //field change function
+    const fieldChanged = (event) => {
+        setPost({ ...post, [event.target.name]: event.target.value })
+    }
+
+    const contentFieldChanged = (data) => {
+        setPost({ ...post, 'content': data })
+    }
+
     useEffect(() => {
+        setUser(getCurrentUserDetail())
         loadAllCategories().then((data) => {
-            console.log(data);
+            // console.log(data);
             setCategories(data)
         }).catch((error) => {
-            console.log(error);
+            // console.log(error);
         })
     }, [])
+
+
+    //create post function
+    const createPost = (event) => {
+        event.preventDefault();
+        // console.log("form submitted");
+        // console.log(post);
+        if (post.title.trim() === '') {
+            toast.error("Post title is required !!!")
+            return
+        }
+        if (post.content.trim() === '') {
+            toast.error("Post content is required !!!")
+            return
+        }
+        if (post.categoryId.trim() === '') {
+            toast.error("Please select category !!!")
+            return
+        }
+
+        //submit the form on server
+        post['userId'] = user.id;
+        createPostFun(post).then(data => {
+            toast.success("Post Created !!")
+            setPost({
+                title: '',
+                content: '',
+                categorId: ''
+            })
+            // console.log(post);
+        }).catch((error) => {
+            toast.error("Post is not created due to some error !!")
+            // console.log(error);
+        })
+
+    }
 
     return (
         <div className="wrapper">
 
             <Card className="shadow-sm border-0 mt-2">
                 <CardBody>
+                    {/* {JSON.stringify(post)} */}
 
                     <h3>What going on your mind?</h3>
-                    <Form>
+                    <Form onSubmit={createPost}>
                         <div className="my-3">
                             <Label for="title">Post Title</Label>
                             <Input
                                 type="text"
                                 id="title"
                                 placeholder="Enter here"
+                                name="title"
+                                onChange={fieldChanged}
                             />
                         </div>
 
@@ -49,9 +107,9 @@ const AddPost = () => {
 
                             <JoditEditor
                                 ref={editor}
-                                value={content}
-                                config={config}
-                                onChange={newContent => setContent(newContent)}
+                                value={post.content}
+
+                                onChange={contentFieldChanged}
 
 
                             />
@@ -64,8 +122,11 @@ const AddPost = () => {
                                 type="select"
                                 id="category"
                                 placeholder="Enter here"
-
+                                name="categoryId"
+                                onChange={fieldChanged}
+                                defaultValue={0}
                             >
+                                <option disabled value={0}>--Select Category--</option>
 
                                 {
                                     categories.map((category) => (
@@ -78,7 +139,7 @@ const AddPost = () => {
                         </div>
 
                         <Container className="text-center">
-                            <Button color="primary">Create Post</Button>
+                            <Button type="submit" color="primary">Create Post</Button>
                             <Button color="danger" className="ms-2">Reset Content</Button>
                         </Container>
                     </Form>
