@@ -8,6 +8,6 @@ export const createPostFun = (postData) => {
 }
 
 //get all posts
-export const loadAllPosts = () => {
-    return myAxios.get(`/posts`).then(response => response.data);
+export const loadAllPosts = (pageNumber, pageSize) => {
+    return myAxios.get(`/posts?pageNumber=${pageNumber}&pageSize=${pageSize}`).then(response => response.data);
 }
