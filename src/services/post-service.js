@@ -25,10 +25,15 @@ export const createComment = (comment, postId) => {
 export const uploadPostImage = (image, postId) => {
     let formData = new FormData()
     formData.append("image", image)
-    return privateAxios.post(`/post/image/upload/${postId}`, formData,{
-        headers:{
-            'content-type':'multipart/form-data'
+    return privateAxios.post(`/post/image/upload/${postId}`, formData, {
+        headers: {
+            'content-type': 'multipart/form-data'
         }
     }).then((response) => response.data)
 
+}
+
+//get posts by categories wise
+export const loadPostCategoriesWise = (categoryId) => {
+    return privateAxios.get(`/category/${categoryId}/posts`).then(res => res.data);
 }

@@ -5,6 +5,7 @@ import { Button } from 'reactstrap';
 import Base from './components/Base';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home';
+import Categories from './pages/Categories';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import About from './pages/About';
@@ -29,6 +30,7 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/services' element={<Services />} />
           <Route path='/posts/:postId' element={<PostPage />} />
+          <Route path='/categories/:categoryId' element={<Categories />} />
 
           <Route path='/user' element={<PrivateRoute />} >
             <Route path='dashboard' element={<UserDashboard />} />
