@@ -7,7 +7,7 @@ import { Col, Container, Row } from "reactstrap";
 import Base from '../components/Base'
 import CategorySideMenu from "../components/CategorySideMenu";
 import Post from '../components/Post';
-import { loadPostCategoriesWise } from '../services/post-service';
+import { deletePostService, loadPostCategoriesWise } from '../services/post-service';
 
 function Categories() {
 
@@ -26,6 +26,19 @@ function Categories() {
         })
     }, [categoryId])
 
+    function deletePost(post) {
+        //going to delete post
+        deletePostService(post.id).then(res => {
+            console.log(res);
+            toast.success('Post deleted!!')
+            let newPosts = posts.filter(p => p.id != post.id)
+            setPosts([...newPosts])
+        }).catch(error => {
+            console.log(error);
+            toast.error("something went wrong!!")
+        })
+    }
+
     return (
         <div>
 
@@ -40,7 +53,7 @@ function Categories() {
                             {
                                 posts && posts.map((post, index) => {
                                     return (
-                                        <Post key={index} post={post} />
+                                        <Post deletePost={deletePost} key={index} post={post} />
                                     )
                                 })
                             }
