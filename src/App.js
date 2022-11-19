@@ -17,6 +17,7 @@ import PrivateRoute from './components/PrivateRoute';
 import ProfileInfo from './pages/user-routes/ProfileInfo';
 import PostPage from './pages/PostPage';
 import UserProvider from './context/UserProvider';
+import UpdateBlog from './pages/UpdateBlog';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path='/user' element={<PrivateRoute />} >
             <Route path='dashboard' element={<UserDashboard />} />
             <Route path='profile-info' element={<ProfileInfo />} />
+            <Route path='update-blog/:blogId' element={<UpdateBlog />} />
           </Route>
 
 

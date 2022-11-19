@@ -1,6 +1,6 @@
 import { Navigate, NavLink as ReactLink, useNavigate } from "react-router-dom";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Collapse,
   Navbar,
@@ -16,8 +16,11 @@ import {
   NavbarText,
 } from "reactstrap";
 import { doLogout, getCurrentUserDetail, isLoggedIn } from "../auth";
+import userContext from "../context/userContext";
 
 function CustomNavbar(args) {
+
+  const userContextData = useContext(userContext);
 
   let navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +39,10 @@ function CustomNavbar(args) {
     doLogout(() => {
       //logged out
       setLogin(false)
+      userContextData.setUser({
+        data: null,
+        login: false
+      })
       navigate("/")
     })
   }

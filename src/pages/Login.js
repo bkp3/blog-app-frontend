@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { doLogin } from "../auth";
 import Base from "../components/Base";
+import userContext from "../context/userContext";
 import { loginUser } from "../services/user-service";
 
 const Login = () => {
+
+    const userContextData = useContext(userContext)
 
     const navigate = useNavigate()
 
@@ -51,8 +54,12 @@ const Login = () => {
             doLogin(data, () => {
                 console.log("login detail is saved to localstorage");
                 //redirect to user dashboard page
+                userContextData.setUser({
+                    data: data.user,
+                    login: true
+                });
                 navigate("/user/dashboard")
-            })
+            });
 
 
             toast.success("Login Success");
