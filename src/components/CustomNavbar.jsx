@@ -92,7 +92,7 @@ function CustomNavbar(args) {
               login && (
                 <>
                   <NavItem>
-                    <NavLink tag={ReactLink} to="/user/profile-info">
+                    <NavLink tag={ReactLink} to={`/user/profile-info/${user.id}`}>
                       Profile Info
                     </NavLink>
                   </NavItem>
